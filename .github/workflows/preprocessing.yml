@@ -1,0 +1,37 @@
+name: Preprocessing Dataset Heart
+
+on:
+  push:
+    branches:
+      - main
+      - master
+  workflow_dispatch: 
+
+jobs:
+  build-and-preprocess:
+    runs-on: ubuntu-latest 
+
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+
+      - name: Set up python
+        uses: actions/setup-python@v5
+        with:
+          python-version: '3.10'
+
+      - name: Install Library
+        run: |
+          python -m pip install --upgrade pip
+          pip install -r requirements.txt
+
+      - name: Run script
+        run: |
+          cd preprocessing
+          python automate_Michael-Effendy.py
+
+      - name: Upload/push output sebagai artifact
+        uses: actions/upload-artifact@v4
+        with:
+          name: heart_preprocessing
+          path: preprocessing/heart_preprocessing/
